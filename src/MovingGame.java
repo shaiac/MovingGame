@@ -45,7 +45,12 @@ public class MovingGame extends KeyAdapter implements GLEventListener {
         texture.bind(gl);
         glu.gluLookAt(origin.get(0), origin.get(1), origin.get(2), 0, 0, 3, 0, 1, 0);
         gl.glBegin(GL2.GL_QUADS);
-        // Front Face
+
+        createWalls(gl);
+        createCube(gl,-100,0,-100,5);
+        createCube(gl,0,0,-100,5);
+
+        /*// Front Face
         gl.glTexCoord2f(0.0f, 0.0f);
         gl.glVertex3f(-1.0f, -1.0f, 1.0f);
         gl.glTexCoord2f(2f, 0.0f);
@@ -99,7 +104,7 @@ public class MovingGame extends KeyAdapter implements GLEventListener {
         gl.glVertex3f(-1.0f, 1.0f, 1.0f);
         gl.glTexCoord2f(0.0f, 1.0f);
         gl.glVertex3f(-1.0f, 1.0f, -1.0f);
-        gl.glEnd();
+        gl.glEnd();*/
     }
 
     public void init(GLAutoDrawable drawable) {
@@ -145,6 +150,7 @@ public class MovingGame extends KeyAdapter implements GLEventListener {
     }
 
     public void keyPressed(KeyEvent e) {
+        float step = 1.0f;
         char keyPressed = e.getKeyChar();
         if(e.getKeyCode() == KeyEvent.VK_ESCAPE) {
             exit();
@@ -164,20 +170,20 @@ public class MovingGame extends KeyAdapter implements GLEventListener {
         } else if (keyPressed == 'u' || keyPressed == 'U') {
             //cooSystem.rotate('z', );
         } else if (keyPressed == 'w' || keyPressed == 'W') {
-            cooSystem.moveStep('z', 0.1);
+            cooSystem.moveStep('z', step);
 
         } else if (keyPressed == 's' || keyPressed == 'S') {
-            cooSystem.moveStep('z', -0.1);
+            cooSystem.moveStep('z', -step);
 
         } else if (keyPressed == 'd' || keyPressed == 'D') {
-            cooSystem.moveStep('x', 0.1);
+            cooSystem.moveStep('x', step);
         } else if (keyPressed == 'a' || keyPressed == 'A') {
-            cooSystem.moveStep('x', -0.1);
+            cooSystem.moveStep('x', -step);
 
         } else if (keyPressed == 'e' || keyPressed == 'E') {
-            cooSystem.moveStep('y', 0.1);
+            cooSystem.moveStep('y', step);
         } else if (keyPressed == 'q' || keyPressed == 'Q') {
-            cooSystem.moveStep('y', -0.1);
+            cooSystem.moveStep('y', -step);
         }
     }
 
@@ -226,4 +232,110 @@ public class MovingGame extends KeyAdapter implements GLEventListener {
     public void displayChanged(GLAutoDrawable gLDrawable,
                                boolean modeChanged, boolean deviceChanged) {
     }
+
+    public void createWalls(GL2 gl){
+        gl.glBegin(GL2.GL_QUADS);
+        //front wall
+        gl.glColor3f(1.0f,0.0f,0.0f);
+        gl.glVertex3f(-128.0f, 0.0f, -128.0f);
+        gl.glVertex3f(-128.0f, 64.0f, -128.0f);
+        gl.glVertex3f(128.0f, 64.0f, -128.0f);
+        gl.glVertex3f(128.0f, 0.0f, -128.0f);
+
+        // back wall
+        gl.glColor3f(1.0f,1.0f,0.0f);
+        gl.glVertex3f(-128.0f,0.0f,128.0f);
+        gl.glVertex3f(-128.0f,64.0f,128.0f);
+        gl.glVertex3f(128.0f,0.0f,128.0f);
+        gl.glVertex3f(128.0f,64.0f,128.0f);
+
+        //right wall
+        gl.glColor3f(0.0f,1.0f,0.0f);
+        gl.glVertex3f(128.0f,0.0f,-128.0f);
+        gl.glVertex3f(128.0f,64.0f,-128.0f);
+        gl.glVertex3f(128.0f,64.0f,128.0f);
+        gl.glVertex3f(128.0f,0.0f,128.0f);
+
+        //left wall
+        gl.glColor3f(0.0f,1.0f,0.0f);
+        gl.glVertex3f(-128.0f,0.0f,128.0f);
+        gl.glVertex3f(-128.0f,64.0f,128.0f);
+        gl.glVertex3f(-128.0f,64.0f,-128.0f);
+        gl.glVertex3f(-128.0f,0.0f,-128.0f);
+
+        //top wall
+        gl.glColor3f(0.5f,0.5f,0.5f);
+        gl.glVertex3f(-128.0f,64.0f,-128.0f);
+        gl.glVertex3f(128.0f,64.0f,-128.0f);
+        gl.glVertex3f(128.0f,64.0f,128.0f);
+        gl.glVertex3f(-128.0f,64.0f,128.0f);
+
+        //bottom wall
+        gl.glColor3f(0.5f,0.5f,0.5f);
+        gl.glVertex3f(-128.0f,0.0f,-128.0f);
+        gl.glVertex3f(128.0f,0.0f,-128.0f);
+        gl.glVertex3f(128.0f,0.0f,128.0f);
+        gl.glVertex3f(-128.0f,0.0f,128.0f);
+        gl.glEnd();
+    }
+
+    public void createCube(GL2 gl,float x, float y, float z, float width ){
+        gl.glBegin(GL2.GL_QUADS);
+        // front Face
+        gl.glTexCoord2f(0.0f, 0.0f);
+        gl.glVertex3f(x, y, z+width);
+        gl.glTexCoord2f(2f, 0.0f);
+        gl.glVertex3f(x, y+width, z+width);
+        gl.glTexCoord2f(2f, 1.0f);
+        gl.glVertex3f(x+width, y+width, z+width);
+        gl.glTexCoord2f(0.0f, 1.0f);
+        gl.glVertex3f(x+width, y, z+width);
+        // Back Face
+        gl.glTexCoord2f(1.0f, 0.0f);
+        gl.glVertex3f(x, y, z);
+        gl.glTexCoord2f(1.0f, 1.0f);
+        gl.glVertex3f(x, y+width, z);
+        gl.glTexCoord2f(0.0f, 1.0f);
+        gl.glVertex3f(x+width, y+width, z);
+        gl.glTexCoord2f(0.0f, 0.0f);
+        gl.glVertex3f(x+width, y, z);
+        // Top Face
+        gl.glTexCoord2f(0.0f, 1.0f);
+        gl.glVertex3f(x, y+width, z);
+        gl.glTexCoord2f(0.0f, 0.0f);
+        gl.glVertex3f(x+width, y+width, z);
+        gl.glTexCoord2f(1.0f, 0.0f);
+        gl.glVertex3f(x+width, y+width, z+width);
+        gl.glTexCoord2f(1.0f, 1.0f);
+        gl.glVertex3f(x, y+width, z+width);
+        // Bottom Face
+        gl.glTexCoord2f(1.0f, 1.0f);
+        gl.glVertex3f(x, y, z);
+        gl.glTexCoord2f(0.0f, 1.0f);
+        gl.glVertex3f(x+width, y, z);
+        gl.glTexCoord2f(0.0f, 0.0f);
+        gl.glVertex3f(x+width, y, z+width);
+        gl.glTexCoord2f(1.0f, 0.0f);
+        gl.glVertex3f(x, y, z+width);
+        // Right face
+        gl.glTexCoord2f(1.0f, 0.0f);
+        gl.glVertex3f(x+width, y, z);
+        gl.glTexCoord2f(1.0f, 1.0f);
+        gl.glVertex3f(x+width, y+width, z);
+        gl.glTexCoord2f(0.0f, 1.0f);
+        gl.glVertex3f(x+width, y+width, z+width);
+        gl.glTexCoord2f(0.0f, 0.0f);
+        gl.glVertex3f(x+width, y, z+width);
+        // Left Face
+        gl.glTexCoord2f(0.0f, 0.0f);
+        gl.glVertex3f(x, y, z);
+        gl.glTexCoord2f(1.0f, 0.0f);
+        gl.glVertex3f(x, y+width, z);
+        gl.glTexCoord2f(1.0f, 1.0f);
+        gl.glVertex3f(x, y+width, z+width);
+        gl.glTexCoord2f(0.0f, 1.0f);
+        gl.glVertex3f(x, y, z+width);
+        gl.glEnd();
+    }
+
 }

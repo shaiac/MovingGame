@@ -7,7 +7,7 @@ public class CoordinateSystem {
  private Vector origin;
 
  public CoordinateSystem() {
-        double[] vec = {0,0,0};
+        double[] vec = {-60,8,-60};
         origin = new Vector(vec,3 );
  }
 
