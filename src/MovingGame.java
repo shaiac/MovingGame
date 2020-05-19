@@ -47,64 +47,6 @@ public class MovingGame extends KeyAdapter implements GLEventListener {
         gl.glBegin(GL2.GL_QUADS);
         // Front Face
         gl.glTexCoord2f(0.0f, 0.0f);
-        gl.glVertex3f(-3.0f, 3.0f, 1.0f);
-        gl.glTexCoord2f(2f, 0.0f);
-        gl.glVertex3f(0.0f, 0.0f, 1.0f);
-        gl.glTexCoord2f(2f, 1.0f);
-        gl.glVertex3f(0.0f, 3.0f, 1.0f);
-        gl.glTexCoord2f(0.0f, 1.0f);
-        gl.glVertex3f(-3.0f, 0.0f, 1.0f);
-        // Back Face
-        gl.glTexCoord2f(1.0f, 0.0f);
-        gl.glVertex3f(-1.0f, -1.0f, -1.0f);
-        gl.glTexCoord2f(1.0f, 1.0f);
-        gl.glVertex3f(-1.0f, 1.0f, -1.0f);
-        gl.glTexCoord2f(0.0f, 1.0f);
-        gl.glVertex3f(1.0f, 1.0f, -1.0f);
-        gl.glTexCoord2f(0.0f, 0.0f);
-        gl.glVertex3f(1.0f, -1.0f, -1.0f);
-        // Top Face
-        gl.glTexCoord2f(0.0f, 1.0f);
-        gl.glVertex3f(-1.0f, 1.0f, -1.0f);
-        gl.glTexCoord2f(0.0f, 0.0f);
-        gl.glVertex3f(-1.0f, 1.0f, 1.0f);
-        gl.glTexCoord2f(1.0f, 0.0f);
-        gl.glVertex3f(1.0f, 1.0f, 1.0f);
-        gl.glTexCoord2f(1.0f, 1.0f);
-        gl.glVertex3f(1.0f, 1.0f, -1.0f);
-        // Bottom Face
-        gl.glTexCoord2f(1.0f, 1.0f);
-        gl.glVertex3f(-1.0f, -1.0f, -1.0f);
-        gl.glTexCoord2f(0.0f, 1.0f);
-        gl.glVertex3f(1.0f, -1.0f, -1.0f);
-        gl.glTexCoord2f(0.0f, 0.0f);
-        gl.glVertex3f(1.0f, -1.0f, 1.0f);
-        gl.glTexCoord2f(1.0f, 0.0f);
-        gl.glVertex3f(-1.0f, -1.0f, 1.0f);
-        // Right face
-        gl.glTexCoord2f(1.0f, 0.0f);
-        gl.glVertex3f(1.0f, -1.0f, -1.0f);
-        gl.glTexCoord2f(1.0f, 1.0f);
-        gl.glVertex3f(1.0f, 1.0f, -1.0f);
-        gl.glTexCoord2f(0.0f, 1.0f);
-        gl.glVertex3f(1.0f, 1.0f, 1.0f);
-        gl.glTexCoord2f(0.0f, 0.0f);
-        gl.glVertex3f(1.0f, -1.0f, 1.0f);
-        // Left Face
-        gl.glTexCoord2f(0.0f, 0.0f);
-        gl.glVertex3f(-1.0f, -1.0f, -1.0f);
-        gl.glTexCoord2f(1.0f, 0.0f);
-        gl.glVertex3f(-1.0f, -1.0f, 1.0f);
-        gl.glTexCoord2f(1.0f, 1.0f);
-        gl.glVertex3f(-1.0f, 1.0f, 1.0f);
-        gl.glTexCoord2f(0.0f, 1.0f);
-        gl.glVertex3f(-1.0f, 1.0f, -1.0f);
-        gl.glEnd();
-
-
-        gl.glBegin(GL2.GL_QUADS);
-        // Front Face
-        gl.glTexCoord2f(0.0f, 0.0f);
         gl.glVertex3f(-1.0f, -1.0f, 1.0f);
         gl.glTexCoord2f(2f, 0.0f);
         gl.glVertex3f(1.0f, -1.0f, 1.0f);
@@ -222,20 +164,20 @@ public class MovingGame extends KeyAdapter implements GLEventListener {
         } else if (keyPressed == 'u' || keyPressed == 'U') {
             //cooSystem.rotate('z', );
         } else if (keyPressed == 'w' || keyPressed == 'W') {
-            cooSystem.moveStep('z', 0.2);
+            cooSystem.moveStep('z', 0.1);
 
         } else if (keyPressed == 's' || keyPressed == 'S') {
-            cooSystem.moveStep('z', -0.2);
+            cooSystem.moveStep('z', -0.1);
 
         } else if (keyPressed == 'd' || keyPressed == 'D') {
-            cooSystem.moveStep('x', 0.2);
+            cooSystem.moveStep('x', 0.1);
         } else if (keyPressed == 'a' || keyPressed == 'A') {
-            cooSystem.moveStep('x', -0.2);
+            cooSystem.moveStep('x', -0.1);
 
         } else if (keyPressed == 'e' || keyPressed == 'E') {
-            cooSystem.moveStep('y', 0.2);
+            cooSystem.moveStep('y', 0.1);
         } else if (keyPressed == 'q' || keyPressed == 'Q') {
-            cooSystem.moveStep('y', -0.2);
+            cooSystem.moveStep('y', -0.1);
         }
     }
 
