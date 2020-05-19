@@ -9,6 +9,7 @@ import javax.media.opengl.GLProfile;
 import javax.media.opengl.awt.GLCanvas;
 import javax.media.opengl.glu.GLU;
 
+import LinearMath.Vector;
 import com.jogamp.newt.Window;
 import com.jogamp.newt.event.KeyAdapter;
 import com.jogamp.newt.event.KeyEvent;
@@ -19,10 +20,19 @@ import com.jogamp.opengl.util.texture.TextureIO;
 
 public class MovingGame extends KeyAdapter implements GLEventListener {
     private Texture texture;
-    static GLU glu = new GLU();
-    static GLCanvas canvas = new GLCanvas();
-    static Frame frame = new Frame("Moving Game");
-    static Animator animator = new Animator(canvas);
+    private CoordinateSystem cooSystem;
+    private static GLU glu;
+    private static GLCanvas canvas;
+    private static Frame frame;
+    private static Animator animator;
+
+    public MovingGame() {
+        this.cooSystem =  new CoordinateSystem();
+        glu = new GLU();
+        canvas = new GLCanvas();
+        frame = new Frame("Moving Game");
+        animator = new Animator(canvas);
+    }
 
     public void display(GLAutoDrawable gLDrawable) {
         final GL2 gl = gLDrawable.getGL().getGL2();
@@ -31,19 +41,19 @@ public class MovingGame extends KeyAdapter implements GLEventListener {
         gl.glTranslatef(0.0f, 0.0f, -5.0f);
         gl.glTexParameteri ( GL2.GL_TEXTURE_2D,GL2.GL_TEXTURE_WRAP_T, GL2.GL_REPEAT );
         gl.glTexParameteri( GL2.GL_TEXTURE_2D,GL2.GL_TEXTURE_WRAP_S, GL2.GL_REPEAT );
-//        gl.glTexParameteri( GL2.GL_TEXTURE_2D,GL2.GL_TEXTURE_WRAP_S, GL2.GL_CLAMP );
+        Vector origin = cooSystem.getOrigin();
         texture.bind(gl);
-
+        glu.gluLookAt(origin.get(0), origin.get(1), origin.get(2), 0, 0, 3, 0, 1, 0);
         gl.glBegin(GL2.GL_QUADS);
         // Front Face
         gl.glTexCoord2f(0.0f, 0.0f);
-        gl.glVertex3f(-3.0f, -3.0f, 1.0f);
-        gl.glTexCoord2f(2f, 0.0f);
-        gl.glVertex3f(3.0f, -3.0f, 1.0f);
-        gl.glTexCoord2f(2f, 1.0f);
-        gl.glVertex3f(3.0f, 3.0f, 1.0f);
-        gl.glTexCoord2f(0.0f, 1.0f);
         gl.glVertex3f(-3.0f, 3.0f, 1.0f);
+        gl.glTexCoord2f(2f, 0.0f);
+        gl.glVertex3f(0.0f, 0.0f, 1.0f);
+        gl.glTexCoord2f(2f, 1.0f);
+        gl.glVertex3f(0.0f, 3.0f, 1.0f);
+        gl.glTexCoord2f(0.0f, 1.0f);
+        gl.glVertex3f(-3.0f, 0.0f, 1.0f);
         // Back Face
         gl.glTexCoord2f(1.0f, 0.0f);
         gl.glVertex3f(-1.0f, -1.0f, -1.0f);
@@ -90,6 +100,8 @@ public class MovingGame extends KeyAdapter implements GLEventListener {
         gl.glTexCoord2f(0.0f, 1.0f);
         gl.glVertex3f(-1.0f, 1.0f, -1.0f);
         gl.glEnd();
+
+
         gl.glBegin(GL2.GL_QUADS);
         // Front Face
         gl.glTexCoord2f(0.0f, 0.0f);
@@ -191,8 +203,39 @@ public class MovingGame extends KeyAdapter implements GLEventListener {
     }
 
     public void keyPressed(KeyEvent e) {
+        char keyPressed = e.getKeyChar();
         if(e.getKeyCode() == KeyEvent.VK_ESCAPE) {
             exit();
+        } else if (keyPressed == 'i' || keyPressed == 'I') {
+            //cooSystem.rotate('x', );
+
+        } else if (keyPressed == 'k' || keyPressed == 'K') {
+            //cooSystem.rotate('x', );
+
+        } else if (keyPressed == 'l' || keyPressed == 'L') {
+            //cooSystem.rotate('y', );
+
+        } else if (keyPressed == 'j' || keyPressed == 'J') {
+            //cooSystem.rotate('y', );
+        } else if (keyPressed == 'o' || keyPressed == 'O') {
+            //cooSystem.rotate('z', );
+        } else if (keyPressed == 'u' || keyPressed == 'U') {
+            //cooSystem.rotate('z', );
+        } else if (keyPressed == 'w' || keyPressed == 'W') {
+            cooSystem.moveStep('z', 0.2);
+
+        } else if (keyPressed == 's' || keyPressed == 'S') {
+            cooSystem.moveStep('z', -0.2);
+
+        } else if (keyPressed == 'd' || keyPressed == 'D') {
+            cooSystem.moveStep('x', 0.2);
+        } else if (keyPressed == 'a' || keyPressed == 'A') {
+            cooSystem.moveStep('x', -0.2);
+
+        } else if (keyPressed == 'e' || keyPressed == 'E') {
+            cooSystem.moveStep('y', 0.2);
+        } else if (keyPressed == 'q' || keyPressed == 'Q') {
+            cooSystem.moveStep('y', -0.2);
         }
     }
 

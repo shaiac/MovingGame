@@ -8,9 +8,14 @@ package LinearMath;
 public class Vector {
     private double[] vec;
     private int size;
+
     public Vector(double[]vec,int size){
         this.vec = vec;
         this.size = size;
+    }
+
+    public double get(int i) {
+        return vec[i];
     }
 
     public int getSize() {
@@ -120,15 +125,6 @@ public class Vector {
         vecArr[1] = this.getVec()[2] * v.getVec()[0] - this.getVec()[0] * v.getVec()[2];
         vecArr[2] = this.getVec()[0] * v.getVec()[1] - this.getVec()[1] * v.getVec()[0];
         vecArr[3] = 1;
-        return newVec;
-    }
-
-    public Vector negatvieVec() {
-        double[] vecArr = new double[size];
-        for(int i=0; i<size; i++){
-            vecArr[i] = -this.vec[i];
-        }
-        Vector newVec = new Vector(vecArr,size-1);
         return newVec;
     }
 }
