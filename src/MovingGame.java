@@ -42,69 +42,16 @@ public class MovingGame extends KeyAdapter implements GLEventListener {
         gl.glTexParameteri ( GL2.GL_TEXTURE_2D,GL2.GL_TEXTURE_WRAP_T, GL2.GL_REPEAT );
         gl.glTexParameteri( GL2.GL_TEXTURE_2D,GL2.GL_TEXTURE_WRAP_S, GL2.GL_REPEAT );
         Vector origin = cooSystem.getOrigin();
+        Vector lookat = origin.minus(cooSystem.getZ());
+        Vector y = cooSystem.getY();
         texture.bind(gl);
-        glu.gluLookAt(origin.get(0), origin.get(1), origin.get(2), 0, 0, 3, 0, 1, 0);
+        glu.gluLookAt(origin.get(0), origin.get(1), origin.get(2), lookat.get(0), lookat.get(1), lookat.get(2),
+                y.get(0), y.get(1), y.get(2));
         gl.glBegin(GL2.GL_QUADS);
 
         createWalls(gl);
         createCube(gl,-100,0,-100,5);
         createCube(gl,0,0,-100,5);
-
-        /*// Front Face
-        gl.glTexCoord2f(0.0f, 0.0f);
-        gl.glVertex3f(-1.0f, -1.0f, 1.0f);
-        gl.glTexCoord2f(2f, 0.0f);
-        gl.glVertex3f(1.0f, -1.0f, 1.0f);
-        gl.glTexCoord2f(2f, 1.0f);
-        gl.glVertex3f(1.0f, 1.0f, 1.0f);
-        gl.glTexCoord2f(0.0f, 1.0f);
-        gl.glVertex3f(-1.0f, 1.0f, 1.0f);
-        // Back Face
-        gl.glTexCoord2f(1.0f, 0.0f);
-        gl.glVertex3f(-1.0f, -1.0f, -1.0f);
-        gl.glTexCoord2f(1.0f, 1.0f);
-        gl.glVertex3f(-1.0f, 1.0f, -1.0f);
-        gl.glTexCoord2f(0.0f, 1.0f);
-        gl.glVertex3f(1.0f, 1.0f, -1.0f);
-        gl.glTexCoord2f(0.0f, 0.0f);
-        gl.glVertex3f(1.0f, -1.0f, -1.0f);
-        // Top Face
-        gl.glTexCoord2f(0.0f, 1.0f);
-        gl.glVertex3f(-1.0f, 1.0f, -1.0f);
-        gl.glTexCoord2f(0.0f, 0.0f);
-        gl.glVertex3f(-1.0f, 1.0f, 1.0f);
-        gl.glTexCoord2f(1.0f, 0.0f);
-        gl.glVertex3f(1.0f, 1.0f, 1.0f);
-        gl.glTexCoord2f(1.0f, 1.0f);
-        gl.glVertex3f(1.0f, 1.0f, -1.0f);
-        // Bottom Face
-        gl.glTexCoord2f(1.0f, 1.0f);
-        gl.glVertex3f(-1.0f, -1.0f, -1.0f);
-        gl.glTexCoord2f(0.0f, 1.0f);
-        gl.glVertex3f(1.0f, -1.0f, -1.0f);
-        gl.glTexCoord2f(0.0f, 0.0f);
-        gl.glVertex3f(1.0f, -1.0f, 1.0f);
-        gl.glTexCoord2f(1.0f, 0.0f);
-        gl.glVertex3f(-1.0f, -1.0f, 1.0f);
-        // Right face
-        gl.glTexCoord2f(1.0f, 0.0f);
-        gl.glVertex3f(1.0f, -1.0f, -1.0f);
-        gl.glTexCoord2f(1.0f, 1.0f);
-        gl.glVertex3f(1.0f, 1.0f, -1.0f);
-        gl.glTexCoord2f(0.0f, 1.0f);
-        gl.glVertex3f(1.0f, 1.0f, 1.0f);
-        gl.glTexCoord2f(0.0f, 0.0f);
-        gl.glVertex3f(1.0f, -1.0f, 1.0f);
-        // Left Face
-        gl.glTexCoord2f(0.0f, 0.0f);
-        gl.glVertex3f(-1.0f, -1.0f, -1.0f);
-        gl.glTexCoord2f(1.0f, 0.0f);
-        gl.glVertex3f(-1.0f, -1.0f, 1.0f);
-        gl.glTexCoord2f(1.0f, 1.0f);
-        gl.glVertex3f(-1.0f, 1.0f, 1.0f);
-        gl.glTexCoord2f(0.0f, 1.0f);
-        gl.glVertex3f(-1.0f, 1.0f, -1.0f);
-        gl.glEnd();*/
     }
 
     public void init(GLAutoDrawable drawable) {
@@ -151,35 +98,31 @@ public class MovingGame extends KeyAdapter implements GLEventListener {
 
     public void keyPressed(KeyEvent e) {
         float step = 1.0f;
+        double angle = 2;
         char keyPressed = e.getKeyChar();
         if(e.getKeyCode() == KeyEvent.VK_ESCAPE) {
             exit();
         } else if (keyPressed == 'i' || keyPressed == 'I') {
-            //cooSystem.rotate('x', );
-
+            cooSystem.rotate('x', angle);
         } else if (keyPressed == 'k' || keyPressed == 'K') {
-            //cooSystem.rotate('x', );
-
+            cooSystem.rotate('x', angle);
         } else if (keyPressed == 'l' || keyPressed == 'L') {
-            //cooSystem.rotate('y', );
-
+            cooSystem.rotate('y', angle);
         } else if (keyPressed == 'j' || keyPressed == 'J') {
-            //cooSystem.rotate('y', );
+            cooSystem.rotate('y', angle);
         } else if (keyPressed == 'o' || keyPressed == 'O') {
-            //cooSystem.rotate('z', );
+            cooSystem.rotate('z', angle);
         } else if (keyPressed == 'u' || keyPressed == 'U') {
-            //cooSystem.rotate('z', );
+            cooSystem.rotate('z', angle);
         } else if (keyPressed == 'w' || keyPressed == 'W') {
             cooSystem.moveStep('z', step);
-
         } else if (keyPressed == 's' || keyPressed == 'S') {
             cooSystem.moveStep('z', -step);
 
         } else if (keyPressed == 'd' || keyPressed == 'D') {
-            cooSystem.moveStep('x', step);
-        } else if (keyPressed == 'a' || keyPressed == 'A') {
             cooSystem.moveStep('x', -step);
-
+        } else if (keyPressed == 'a' || keyPressed == 'A') {
+            cooSystem.moveStep('x', step);
         } else if (keyPressed == 'e' || keyPressed == 'E') {
             cooSystem.moveStep('y', step);
         } else if (keyPressed == 'q' || keyPressed == 'Q') {

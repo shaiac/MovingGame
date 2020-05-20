@@ -9,6 +9,12 @@ public class CoordinateSystem {
  public CoordinateSystem() {
         double[] vec = {-60,8,-60};
         origin = new Vector(vec,3 );
+        double[] vecZ = {0, 0, 1};
+        z = new Vector(vecZ, 3);
+        double[] vecX = {1, 0, 0};
+        x = new Vector(vecX, 3);
+        double[] vecY = {0, 1, 0};
+        y = new Vector(vecY, 3);
  }
 
  public void rotate(char axis, double angle) {
