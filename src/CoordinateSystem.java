@@ -7,7 +7,7 @@ public class CoordinateSystem {
  private Vector origin;
 
  public CoordinateSystem() {
-        double[] vec = {-60,8,-60};
+        double[] vec = {-60,8,-60   };
         origin = new Vector(vec,3 );
         double[] vecZ = {0, 0, 1};
         z = new Vector(vecZ, 3);
@@ -42,7 +42,7 @@ public class CoordinateSystem {
      } if (axis == 'y') {
         origin.getVec()[1] += step;
      } if (axis == 'z') {
-        origin.getVec()[2] += step;
+         origin.getVec()[2] += step;
      }
  }
 

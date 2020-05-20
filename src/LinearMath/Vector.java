@@ -127,4 +127,13 @@ public class Vector {
         vecArr[3] = 1;
         return newVec;
     }
+
+    public Vector absoluteValue() {
+        double[] vecArr = new double[size];
+        for(int i=0; i<size; i++){
+            vecArr[i] = Math.abs(this.vec[i]);
+        }
+        Vector newVec = new Vector(vecArr,size);
+        return newVec;
+    }
 }
