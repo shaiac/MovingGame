@@ -18,21 +18,21 @@ public class CoordinateSystem {
  }
 
  public void rotate(char axis, double angle) {
-     if (axis == 'y') {
-         x = x.Multiply(Math.cos(angle)).Add(z.Multiply(Math.sin(angle)));
-         x = x.normal();
-         z = x.Multiply(Math.sin(angle)).Add(z.Multiply(Math.cos(angle)));
+     if (axis == 'x') {
+         z = z.Multiply(Math.cos(angle)).minus(y.Multiply(Math.sin(angle)));
          z = z.normal();
-     } if (axis == 'x') {
-         z = z.Multiply(Math.cos(angle)).Add(y.Multiply(Math.sin(angle)));
-         z = z.normal();
-         y = z.Multiply(Math.sin(angle)).Add(y.Multiply(Math.cos(angle)));
+         y = y.Multiply(Math.cos(angle)).Add(z.Multiply(Math.sin(angle)));
          y = y.normal();
+     } if (axis == 'y') {
+         x = x.Multiply(Math.cos(angle)).minus(z.Multiply(Math.sin(angle)));
+         x = x.normal();
+         z = z.Multiply(Math.cos(angle)).Add(x.Multiply(Math.sin(angle)));
+         z = z.normal();
      } if (axis == 'z') {
          x = x.Multiply(Math.cos(angle)).Add(y.Multiply(Math.sin(angle)));
          x = x.normal();
          y = y.Multiply(Math.cos(angle)).minus(x.Multiply(Math.sin(angle)));
-         y= y.normal();
+         y = y.normal();
      }
  }
 
