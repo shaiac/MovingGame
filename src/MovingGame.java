@@ -1,15 +1,16 @@
 import java.awt.Frame;
 import java.io.File;
 import java.io.IOException;
+import java.util.ArrayList;
 
-import javax.media.opengl.GL2;
-import javax.media.opengl.GLAutoDrawable;
-import javax.media.opengl.GLEventListener;
-import javax.media.opengl.GLProfile;
+import javax.media.opengl.*;
 import javax.media.opengl.awt.GLCanvas;
 import javax.media.opengl.glu.GLU;
 
 import LinearMath.Vector;
+import Models.Cube;
+import Models.Wall;
+import Models.Model;
 import com.jogamp.newt.Window;
 import com.jogamp.newt.event.KeyAdapter;
 import com.jogamp.newt.event.KeyEvent;
@@ -19,7 +20,10 @@ import com.jogamp.opengl.util.texture.Texture;
 import com.jogamp.opengl.util.texture.TextureIO;
 
 public class MovingGame extends KeyAdapter implements GLEventListener {
-    private Texture texture;
+    private Texture cube;
+    private Texture walls;
+    private Texture topWall;
+    private Texture bottomWall;
     private CoordinateSystem cooSystem;
     private static GLU glu;
     private static GLCanvas canvas;
@@ -40,25 +44,33 @@ public class MovingGame extends KeyAdapter implements GLEventListener {
         float position1[] = {-60f,20f,-30f,1.0f};	// blue light on the left side (light 1)
         gl.glClear(GL2.GL_COLOR_BUFFER_BIT | GL2.GL_DEPTH_BUFFER_BIT);
         gl.glLoadIdentity();  // Reset The View
-        gl.glTranslatef(0.0f, 0.0f, -5.0f);
-        gl.glTexParameteri ( GL2.GL_TEXTURE_2D,GL2.GL_TEXTURE_WRAP_T, GL2.GL_REPEAT );
-        gl.glTexParameteri( GL2.GL_TEXTURE_2D,GL2.GL_TEXTURE_WRAP_S, GL2.GL_REPEAT );
+        gl.glTranslatef(0.0f, 0.0f, 0.0f);
+        gl.glTexParameteri ( GL2.GL_TEXTURE_2D,GL2.GL_TEXTURE_WRAP_S, GL2.GL_LINEAR);
+        gl.glTexParameteri( GL2.GL_TEXTURE_2D,GL2.GL_TEXTURE_WRAP_T, GL2.GL_LINEAR);
         Vector origin = cooSystem.getOrigin();
         Vector lookat = origin.minus(cooSystem.getZ());
         //lookat.normal();
         Vector y = cooSystem.getY();
-        texture.bind(gl);
+        //texture.bind(gl);
         //The light
         gl.glLightfv(GL2.GL_LIGHT0, GL2.GL_POSITION, position0, 0);
         gl.glLightfv(GL2.GL_LIGHT1, GL2.GL_POSITION, position1, 0);
 
         glu.gluLookAt(origin.get(0), origin.get(1), origin.get(2), lookat.get(0), lookat.get(1), lookat.get(2), y.getVec()[0], y.getVec()[1], y.getVec()[2]);
-               // y.get(0), y.get(1), y.get(2));
-        gl.glBegin(GL2.GL_QUADS);
+        // create the model
+        ArrayList<Model> models = new ArrayList<>();
+        models.addAll(createWalls());
+        Cube cube1 = new Cube(-20,0,-20,5);
+        cube1.setTexture(cube);
+        models.add(cube1);
+        Cube cube2 = new Cube(15,0,-20,5);
+        cube2.setTexture(cube);
+        models.add(cube2);
 
-        createWalls(gl);
-        createCube(gl,-100,0,-100,5);
-        createCube(gl,0,0,-100,5);
+        for (Model model:models
+             ) {
+            model.draw(gl);
+        }
     }
 
     public void init(GLAutoDrawable drawable) {
@@ -73,13 +85,21 @@ public class MovingGame extends KeyAdapter implements GLEventListener {
         gl.glEnable(GL2.GL_TEXTURE_2D);
         try {
             String filename="resources/Picture1.jpg"; // the FileName to open
-            texture=TextureIO.newTexture(new File( filename ),true);
+            cube=TextureIO.newTexture(new File( filename ),true);
+            filename="resources/Picture2.jpg";
+            walls=TextureIO.newTexture(new File( filename ),true);
+            filename="resources/TopWall.jpg";
+            topWall=TextureIO.newTexture(new File( filename ),true);
+            filename="resources/BottomWall.jpg";
+            bottomWall=TextureIO.newTexture(new File( filename ),true);
+
         } catch (IOException e) {
             e.printStackTrace();
             throw new RuntimeException(e);
         }
         gl.glTexParameteri(GL2.GL_TEXTURE_2D, GL2.GL_TEXTURE_MIN_FILTER, GL2.GL_LINEAR);
         gl.glTexParameteri(GL2.GL_TEXTURE_2D, GL2.GL_TEXTURE_MAG_FILTER, GL2.GL_LINEAR);
+
 
         // Light
         float	ambient[] = {0.1f,0.1f,0.1f,1.0f};
@@ -205,108 +225,40 @@ public class MovingGame extends KeyAdapter implements GLEventListener {
     public void displayChanged(GLAutoDrawable gLDrawable,
                                boolean modeChanged, boolean deviceChanged) {
     }
-    public void createWall(GL2 gl,float x,float y,float z,char axis,float width,float hieght){
-        gl.glVertex3f(x,y,z);
-        gl.glVertex3f(x,y+hieght,z);
-        if(axis =='x'){
-            x+= width;
-        }else {
-            z+= width;
-        }
-        gl.glVertex3f(x,y+hieght,z);
-        gl.glVertex3f(x,y,z);
-    }
-    public void createWalls(GL2 gl){
-        gl.glBegin(GL2.GL_QUADS);
-        //front wall
-        gl.glColor3f(1.0f,0.0f,0.0f);
-        createWall(gl,-20,0,-20,'x',40,10);
 
-        // back wall
-        gl.glColor3f(1.0f,1.0f,0.0f);
-        createWall(gl,-20.0f,0.0f,20.0f,'x',40,10);
+    public ArrayList<Model> createWalls(){
+        ArrayList<Model> models = new ArrayList<>();
 
-        //right wall
-        gl.glColor3f(0.0f,1.0f,0.0f);
-        createWall(gl,20.0f,0.0f,-20.0f,'z',40,10);
+        Wall front = new Wall(-20,0,-20,'x',10,40);
+        front.setTex(walls);
+        models.add(front);
 
-        //left wall
-        gl.glColor3f(0.0f,1.0f,0.0f);
-        createWall(gl,-20.0f,0.0f,-20.0f,'z',40,10);
 
-        //top wall
-        gl.glColor3f(0.5f,0.5f,0.5f);
-        gl.glVertex3f(-20.0f,10.0f,-20.0f);
-        gl.glVertex3f(20.0f,10.0f,-20.0f);
-        gl.glVertex3f(20.0f,10.0f,20.0f);
-        gl.glVertex3f(-20.0f,10.0f,20.0f);
+        Wall back = new Wall(-20.0f,0.0f,20.0f,'x',10,40);
+        back.setTex(walls);
+        models.add(back);
 
-        //bottom wall
-        gl.glColor3f(0.5f,0.5f,0.5f);
-        gl.glVertex3f(-20.0f,0.0f,-20.0f);
-        gl.glVertex3f(20.0f,0.0f,-20.0f);
-        gl.glVertex3f(20.0f,0.0f,20.0f);
-        gl.glVertex3f(-20.0f,0.0f,20.0f);
-        gl.glEnd();
-    }
 
-    public void createCube(GL2 gl,float x, float y, float z, float width ){
-        gl.glBegin(GL2.GL_QUADS);
-        // front Face
-        gl.glTexCoord2f(0.0f, 0.0f);
-        gl.glVertex3f(x, y, z+width);
-        gl.glTexCoord2f(2f, 0.0f);
-        gl.glVertex3f(x, y+width, z+width);
-        gl.glTexCoord2f(2f, 1.0f);
-        gl.glVertex3f(x+width, y+width, z+width);
-        gl.glTexCoord2f(0.0f, 1.0f);
-        gl.glVertex3f(x+width, y, z+width);
-        // Back Face
-        gl.glTexCoord2f(1.0f, 0.0f);
-        gl.glVertex3f(x, y, z);
-        gl.glTexCoord2f(1.0f, 1.0f);
-        gl.glVertex3f(x, y+width, z);
-        gl.glTexCoord2f(0.0f, 1.0f);
-        gl.glVertex3f(x+width, y+width, z);
-        gl.glTexCoord2f(0.0f, 0.0f);
-        gl.glVertex3f(x+width, y, z);
-        // Top Face
-        gl.glTexCoord2f(0.0f, 1.0f);
-        gl.glVertex3f(x, y+width, z);
-        gl.glTexCoord2f(0.0f, 0.0f);
-        gl.glVertex3f(x+width, y+width, z);
-        gl.glTexCoord2f(1.0f, 0.0f);
-        gl.glVertex3f(x+width, y+width, z+width);
-        gl.glTexCoord2f(1.0f, 1.0f);
-        gl.glVertex3f(x, y+width, z+width);
-        // Bottom Face
-        gl.glTexCoord2f(1.0f, 1.0f);
-        gl.glVertex3f(x, y, z);
-        gl.glTexCoord2f(0.0f, 1.0f);
-        gl.glVertex3f(x+width, y, z);
-        gl.glTexCoord2f(0.0f, 0.0f);
-        gl.glVertex3f(x+width, y, z+width);
-        gl.glTexCoord2f(1.0f, 0.0f);
-        gl.glVertex3f(x, y, z+width);
-        // Right face
-        gl.glTexCoord2f(1.0f, 0.0f);
-        gl.glVertex3f(x+width, y, z);
-        gl.glTexCoord2f(1.0f, 1.0f);
-        gl.glVertex3f(x+width, y+width, z);
-        gl.glTexCoord2f(0.0f, 1.0f);
-        gl.glVertex3f(x+width, y+width, z+width);
-        gl.glTexCoord2f(0.0f, 0.0f);
-        gl.glVertex3f(x+width, y, z+width);
-        // Left Face
-        gl.glTexCoord2f(0.0f, 0.0f);
-        gl.glVertex3f(x, y, z);
-        gl.glTexCoord2f(1.0f, 0.0f);
-        gl.glVertex3f(x, y+width, z);
-        gl.glTexCoord2f(1.0f, 1.0f);
-        gl.glVertex3f(x, y+width, z+width);
-        gl.glTexCoord2f(0.0f, 1.0f);
-        gl.glVertex3f(x, y, z+width);
-        gl.glEnd();
+        Wall right = new Wall(20.0f,0.0f,-20.0f,'z',10,40);
+        right.setTex(walls);
+        models.add(right);
+
+
+        Wall left = new Wall(-20.0f,0.0f,-20.0f,'z',10,40);
+        left.setTex(walls);
+        models.add(left);
+
+
+        Wall top = new Wall(-20.0f,10.0f,-20.0f,'y',40,40);
+        top.setTex(topWall);
+        models.add(top);
+
+
+        Wall bottom= new Wall(-20.0f,0.0f,-20.0f,'y',40,40);
+        bottom.setTex(bottomWall);
+        models.add(bottom);
+
+        return models;
     }
 
 }
