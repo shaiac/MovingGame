@@ -3,11 +3,14 @@ submit:
 Ziv Zaarur 206099913
 Shai Acoca 315314278
  */
-import java.awt.Frame;
+import java.awt.*;
 import java.io.File;
 import java.io.IOException;
+import java.io.InputStream;
 import java.util.ArrayList;
 
+import javax.annotation.Resource;
+import javax.imageio.ImageIO;
 import javax.media.opengl.*;
 import javax.media.opengl.awt.GLCanvas;
 import javax.media.opengl.glu.GLU;
@@ -90,14 +93,18 @@ public class MovingGame extends KeyAdapter implements GLEventListener {
         gl.glHint(GL2.GL_PERSPECTIVE_CORRECTION_HINT, GL2.GL_NICEST);
         gl.glEnable(GL2.GL_TEXTURE_2D);
         try {
-            String filename="resources/Picture1.jpg"; // the FileName to open
-            cube=TextureIO.newTexture(new File( filename ),true);
-            filename="resources/Picture2.jpg";
-            walls=TextureIO.newTexture(new File( filename ),true);
-            filename="resources/TopWall.jpg";
-            topWall=TextureIO.newTexture(new File( filename ),true);
-            filename="resources/BottomWall.jpg";
-            bottomWall=TextureIO.newTexture(new File( filename ),true);
+            //String filename="resources/Picture1.jpg"; // the FileName to open
+            InputStream file = ClassLoader.getSystemClassLoader().getResourceAsStream("Picture1.jpg");
+            cube=TextureIO.newTexture(file,true,"jpg");
+            //filename="resources/Picture2.jpg";
+            file = ClassLoader.getSystemClassLoader().getResourceAsStream("Picture2.jpg");
+            walls=TextureIO.newTexture(file,true,"jpg");
+            //filename="resources/TopWall.jpg";
+            file = ClassLoader.getSystemClassLoader().getResourceAsStream("TopWall.jpg");
+            topWall=TextureIO.newTexture(file,true,"jpg");
+            //filename="resources/BottomWall.jpg";
+            file = ClassLoader.getSystemClassLoader().getResourceAsStream("BottomWall.jpg");
+            bottomWall=TextureIO.newTexture(file,true,"jpg");
 
         } catch (IOException e) {
             e.printStackTrace();

@@ -1,0 +1,16 @@
+<component name="ArtifactManager">
+  <artifact type="jar" build-on-make="true" name="ComputerGraphicsEx2:jar">
+    <output-path>$PROJECT_DIR$/out/artifacts/ComputerGraphicsEx2_jar</output-path>
+    <root id="archive" name="ComputerGraphicsEx2.jar">
+      <element id="module-output" name="ComputerGraphicsEx2" />
+      <element id="extracted-dir" path="$PROJECT_DIR$/libs/gluegen.jar" path-in-jar="/" />
+      <element id="extracted-dir" path="$PROJECT_DIR$/libs/jogl-all.jar" path-in-jar="/" />
+      <element id="extracted-dir" path="$PROJECT_DIR$/libs/gluegen-rt.jar" path-in-jar="/" />
+      <element id="extracted-dir" path="$PROJECT_DIR$/libs/jogl-all-natives-windows-amd64.jar" path-in-jar="/" />
+      <element id="library" level="project" name="libs" />
+      <element id="directory" name="resources">
+        <element id="dir-copy" path="$PROJECT_DIR$/resources" />
+      </element>
+    </root>
+  </artifact>
+</component>
