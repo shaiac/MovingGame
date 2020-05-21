@@ -24,9 +24,9 @@ public class CoordinateSystem {
          y = y.Multiply(Math.cos(angle)).Add(z.Multiply(Math.sin(angle)));
          y = y.normal();
      } if (axis == 'y') {
-         x = x.Multiply(Math.cos(angle)).minus(z.Multiply(Math.sin(angle)));
+         x = x.Multiply(Math.cos(angle)).Add(z.Multiply(Math.sin(angle)));
          x = x.normal();
-         z = z.Multiply(Math.cos(angle)).Add(x.Multiply(Math.sin(angle)));
+         z = z.Multiply(Math.cos(angle)).minus(x.Multiply(Math.sin(angle)));
          z = z.normal();
      } if (axis == 'z') {
          x = x.Multiply(Math.cos(angle)).Add(y.Multiply(Math.sin(angle)));

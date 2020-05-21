@@ -58,7 +58,7 @@ public class Vector {
     }
     public double GetLength(){
         double length;
-        Vector v1 = this.DecreaseDimension();
+        Vector v1 = this;
         length = Math.sqrt(v1.Multiply(v1));
         return length;
     }
