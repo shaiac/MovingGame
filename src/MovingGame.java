@@ -49,7 +49,7 @@ public class MovingGame extends KeyAdapter implements GLEventListener {
         gl.glTexParameteri( GL2.GL_TEXTURE_2D,GL2.GL_TEXTURE_WRAP_T, GL2.GL_LINEAR);
         Vector origin = cooSystem.getOrigin();
         Vector lookat = origin.minus(cooSystem.getZ());
-        //lookat.normal();
+        lookat.normal();
         Vector y = cooSystem.getY();
         //texture.bind(gl);
         //The light
@@ -143,11 +143,7 @@ public class MovingGame extends KeyAdapter implements GLEventListener {
     }
 
     public void keyPressed(KeyEvent e) {
-
         float step = 1.0f;
-        /*if(cooSystem.getOrigin().getVec()[2] <0){
-            step = -step;
-        }*/
         double angle = 0.5;
         char keyPressed = e.getKeyChar();
         if(e.getKeyCode() == KeyEvent.VK_ESCAPE) {
@@ -159,20 +155,19 @@ public class MovingGame extends KeyAdapter implements GLEventListener {
         } else if (keyPressed == 'l' || keyPressed == 'L') {
             cooSystem.rotate('y', angle);
         } else if (keyPressed == 'j' || keyPressed == 'J') {
-            cooSystem.rotate('y', angle);
+            cooSystem.rotate('y', -angle);
         } else if (keyPressed == 'o' || keyPressed == 'O') {
-            cooSystem.rotate('z', angle);
+            cooSystem.rotate('z', -angle);
         } else if (keyPressed == 'u' || keyPressed == 'U') {
             cooSystem.rotate('z', angle);
         } else if (keyPressed == 'w' || keyPressed == 'W') {
             cooSystem.moveStep('z', -step);
         } else if (keyPressed == 's' || keyPressed == 'S') {
             cooSystem.moveStep('z', step);
-
         } else if (keyPressed == 'd' || keyPressed == 'D') {
-            cooSystem.moveStep('x', -step);
-        } else if (keyPressed == 'a' || keyPressed == 'A') {
             cooSystem.moveStep('x', step);
+        } else if (keyPressed == 'a' || keyPressed == 'A') {
+            cooSystem.moveStep('x', -step);
         } else if (keyPressed == 'e' || keyPressed == 'E') {
             cooSystem.moveStep('y', step);
         } else if (keyPressed == 'q' || keyPressed == 'Q') {
