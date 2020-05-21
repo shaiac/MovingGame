@@ -7,7 +7,7 @@ public class CoordinateSystem {
  private Vector origin;
 
  public CoordinateSystem() {
-        double[] vec = {-60,8,-60   };
+        double[] vec = {0,0,8  };
         origin = new Vector(vec,3 );
         double[] vecZ = {0, 0, 1};
         z = new Vector(vecZ, 3);
@@ -38,11 +38,11 @@ public class CoordinateSystem {
 
  public void moveStep(char axis, double step) {
      if (axis == 'x') {
-        origin.getVec()[0] += step;
+        origin = origin.Add(x.Multiply(step));
      } if (axis == 'y') {
-        origin.getVec()[1] += step;
+         origin = origin.Add(y.Multiply(step));
      } if (axis == 'z') {
-         origin.getVec()[2] += step;
+         origin = origin.Add(z.Multiply(step));
      }
  }
 

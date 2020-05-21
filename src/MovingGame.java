@@ -45,14 +45,14 @@ public class MovingGame extends KeyAdapter implements GLEventListener {
         gl.glTexParameteri( GL2.GL_TEXTURE_2D,GL2.GL_TEXTURE_WRAP_S, GL2.GL_REPEAT );
         Vector origin = cooSystem.getOrigin();
         Vector lookat = origin.minus(cooSystem.getZ());
-        lookat.normal();
+        //lookat.normal();
         Vector y = cooSystem.getY();
         texture.bind(gl);
         //The light
         gl.glLightfv(GL2.GL_LIGHT0, GL2.GL_POSITION, position0, 0);
         gl.glLightfv(GL2.GL_LIGHT1, GL2.GL_POSITION, position1, 0);
 
-        glu.gluLookAt(origin.get(0), origin.get(1), origin.get(2), lookat.get(0), lookat.get(1), lookat.get(2), 0, 1, 0);
+        glu.gluLookAt(origin.get(0), origin.get(1), origin.get(2), lookat.get(0), lookat.get(1), lookat.get(2), y.getVec()[0], y.getVec()[1], y.getVec()[2]);
                // y.get(0), y.get(1), y.get(2));
         gl.glBegin(GL2.GL_QUADS);
 
@@ -123,8 +123,12 @@ public class MovingGame extends KeyAdapter implements GLEventListener {
     }
 
     public void keyPressed(KeyEvent e) {
+
         float step = 1.0f;
-        double angle = 2;
+        /*if(cooSystem.getOrigin().getVec()[2] <0){
+            step = -step;
+        }*/
+        double angle = 0.5;
         char keyPressed = e.getKeyChar();
         if(e.getKeyCode() == KeyEvent.VK_ESCAPE) {
             exit();
@@ -141,9 +145,9 @@ public class MovingGame extends KeyAdapter implements GLEventListener {
         } else if (keyPressed == 'u' || keyPressed == 'U') {
             cooSystem.rotate('z', angle);
         } else if (keyPressed == 'w' || keyPressed == 'W') {
-            cooSystem.moveStep('z', step);
-        } else if (keyPressed == 's' || keyPressed == 'S') {
             cooSystem.moveStep('z', -step);
+        } else if (keyPressed == 's' || keyPressed == 'S') {
+            cooSystem.moveStep('z', step);
 
         } else if (keyPressed == 'd' || keyPressed == 'D') {
             cooSystem.moveStep('x', -step);
@@ -201,50 +205,48 @@ public class MovingGame extends KeyAdapter implements GLEventListener {
     public void displayChanged(GLAutoDrawable gLDrawable,
                                boolean modeChanged, boolean deviceChanged) {
     }
-
+    public void createWall(GL2 gl,float x,float y,float z,char axis,float width,float hieght){
+        gl.glVertex3f(x,y,z);
+        gl.glVertex3f(x,y+hieght,z);
+        if(axis =='x'){
+            x+= width;
+        }else {
+            z+= width;
+        }
+        gl.glVertex3f(x,y+hieght,z);
+        gl.glVertex3f(x,y,z);
+    }
     public void createWalls(GL2 gl){
         gl.glBegin(GL2.GL_QUADS);
         //front wall
         gl.glColor3f(1.0f,0.0f,0.0f);
-        gl.glVertex3f(-128.0f, 0.0f, -128.0f);
-        gl.glVertex3f(-128.0f, 64.0f, -128.0f);
-        gl.glVertex3f(128.0f, 64.0f, -128.0f);
-        gl.glVertex3f(128.0f, 0.0f, -128.0f);
+        createWall(gl,-20,0,-20,'x',40,10);
 
         // back wall
         gl.glColor3f(1.0f,1.0f,0.0f);
-        gl.glVertex3f(-128.0f,0.0f,128.0f);
-        gl.glVertex3f(-128.0f,64.0f,128.0f);
-        gl.glVertex3f(128.0f,0.0f,128.0f);
-        gl.glVertex3f(128.0f,64.0f,128.0f);
+        createWall(gl,-20.0f,0.0f,20.0f,'x',40,10);
 
         //right wall
         gl.glColor3f(0.0f,1.0f,0.0f);
-        gl.glVertex3f(128.0f,0.0f,-128.0f);
-        gl.glVertex3f(128.0f,64.0f,-128.0f);
-        gl.glVertex3f(128.0f,64.0f,128.0f);
-        gl.glVertex3f(128.0f,0.0f,128.0f);
+        createWall(gl,20.0f,0.0f,-20.0f,'z',40,10);
 
         //left wall
         gl.glColor3f(0.0f,1.0f,0.0f);
-        gl.glVertex3f(-128.0f,0.0f,128.0f);
-        gl.glVertex3f(-128.0f,64.0f,128.0f);
-        gl.glVertex3f(-128.0f,64.0f,-128.0f);
-        gl.glVertex3f(-128.0f,0.0f,-128.0f);
+        createWall(gl,-20.0f,0.0f,-20.0f,'z',40,10);
 
         //top wall
         gl.glColor3f(0.5f,0.5f,0.5f);
-        gl.glVertex3f(-128.0f,64.0f,-128.0f);
-        gl.glVertex3f(128.0f,64.0f,-128.0f);
-        gl.glVertex3f(128.0f,64.0f,128.0f);
-        gl.glVertex3f(-128.0f,64.0f,128.0f);
+        gl.glVertex3f(-20.0f,10.0f,-20.0f);
+        gl.glVertex3f(20.0f,10.0f,-20.0f);
+        gl.glVertex3f(20.0f,10.0f,20.0f);
+        gl.glVertex3f(-20.0f,10.0f,20.0f);
 
         //bottom wall
         gl.glColor3f(0.5f,0.5f,0.5f);
-        gl.glVertex3f(-128.0f,0.0f,-128.0f);
-        gl.glVertex3f(128.0f,0.0f,-128.0f);
-        gl.glVertex3f(128.0f,0.0f,128.0f);
-        gl.glVertex3f(-128.0f,0.0f,128.0f);
+        gl.glVertex3f(-20.0f,0.0f,-20.0f);
+        gl.glVertex3f(20.0f,0.0f,-20.0f);
+        gl.glVertex3f(20.0f,0.0f,20.0f);
+        gl.glVertex3f(-20.0f,0.0f,20.0f);
         gl.glEnd();
     }
 
