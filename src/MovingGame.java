@@ -1,3 +1,8 @@
+/*
+submit:
+Ziv Zaarur 206099913
+Shai Acoca 315314278
+ */
 import java.awt.Frame;
 import java.io.File;
 import java.io.IOException;
@@ -40,34 +45,24 @@ public class MovingGame extends KeyAdapter implements GLEventListener {
 
     public void display(GLAutoDrawable gLDrawable) {
         final GL2 gl = gLDrawable.getGL().getGL2();
-        float position0[] = {60f,20f,-30f,1.0f};		// red light on the right side (light 0)
-        float position1[] = {-60f,20f,-30f,1.0f};	// blue light on the left side (light 1)
+        float position0[] = {20f,10f,0f,1.0f};		// red light on the right side (light 0)
+        float position1[] = {-20f,10f,0f,1.0f};	// blue light on the left side (light 1)
         gl.glClear(GL2.GL_COLOR_BUFFER_BIT | GL2.GL_DEPTH_BUFFER_BIT);
         gl.glLoadIdentity();  // Reset The View
-        gl.glTranslatef(0.0f, 0.0f, 0.0f);
+        gl.glTranslatef(0.0f, 0.0f, -5.0f);
         gl.glTexParameteri ( GL2.GL_TEXTURE_2D,GL2.GL_TEXTURE_WRAP_S, GL2.GL_LINEAR);
         gl.glTexParameteri( GL2.GL_TEXTURE_2D,GL2.GL_TEXTURE_WRAP_T, GL2.GL_LINEAR);
         Vector origin = cooSystem.getOrigin();
         Vector lookat = origin.minus(cooSystem.getZ());
         lookat.normal();
         Vector y = cooSystem.getY();
-        //texture.bind(gl);
+
         //The light
-        //gl.glLightfv(GL2.GL_LIGHT0, GL2.GL_POSITION, position0, 0);
-        //gl.glLightfv(GL2.GL_LIGHT1, GL2.GL_POSITION, position1, 0);
-        float	ambient[] = {1f,1f,1f,1.0f};
-        float	diffuse0[] = {0f,0f,0f,1.0f};
-
-
+        gl.glLightfv(GL2.GL_LIGHT0, GL2.GL_POSITION, position0, 0);
+        gl.glLightfv(GL2.GL_LIGHT1, GL2.GL_POSITION, position1, 0);
 
         glu.gluLookAt(origin.get(0), origin.get(1), origin.get(2), lookat.get(0), lookat.get(1), lookat.get(2), y.getVec()[0], y.getVec()[1], y.getVec()[2]);
-        gl.glLightfv(GL2.GL_LIGHT0,GL2.GL_AMBIENT, ambient,0);
-        gl.glEnable(GL2.GL_LIGHT0);
-        gl.glLightfv(GL2.GL_LIGHT1,GL2.GL_DIFFUSE, diffuse0,0);
-        gl.glEnable(GL2.GL_LIGHT1);
 
-        float pos[] = {20.0f,8.0f,-20.0f};
-        //gl.glLightfv(GL2.GL_LIGHT0,GL2.GL_POSITION,pos,0);
         // create the model
         ArrayList<Model> models = new ArrayList<>();
         models.addAll(createWalls());
@@ -113,22 +108,22 @@ public class MovingGame extends KeyAdapter implements GLEventListener {
         gl.glEnable(GL2.GL_LIGHTING);
 
         // Light
-        /*float	ambient[] = {0.1f,0.1f,0.1f,1.0f};
+        float	ambient[] = {0.7f,0.7f,0.7f,1.0f};
         float	diffuse0[] = {1f,0f,0f,1.0f};
-        float	diffuse1[] = {0f,0f,1f,1.0f};*/
+        float	diffuse1[] = {0f,0f,1f,1.0f};
 
 
         gl.glShadeModel(GL2.GL_SMOOTH);
 
-        //gl.glLightfv(GL2.GL_LIGHT0, GL2.GL_AMBIENT, ambient, 0);
-        //gl.glLightfv(GL2.GL_LIGHT0, GL2.GL_DIFFUSE, diffuse0, 0);
-        //gl.glEnable(GL2.GL_LIGHT0);
+        gl.glLightfv(GL2.GL_LIGHT0, GL2.GL_AMBIENT, ambient, 0);
+        gl.glLightfv(GL2.GL_LIGHT0, GL2.GL_DIFFUSE, diffuse0, 0);
+        gl.glEnable(GL2.GL_LIGHT0);
 
-        //gl.glLightfv(GL2.GL_LIGHT1, GL2.GL_AMBIENT, ambient, 0);
-        //gl.glLightfv(GL2.GL_LIGHT1, GL2.GL_DIFFUSE, diffuse1, 0);
-        //gl.glEnable(GL2.GL_LIGHT1);
+        gl.glLightfv(GL2.GL_LIGHT1, GL2.GL_AMBIENT, ambient, 0);
+        gl.glLightfv(GL2.GL_LIGHT1, GL2.GL_DIFFUSE, diffuse1, 0);
+        gl.glEnable(GL2.GL_LIGHT1);
 
-        //gl.glEnable(GL2.GL_LIGHTING);
+        gl.glEnable(GL2.GL_LIGHTING);
 
         if (drawable instanceof Window) {
             Window window = (Window) drawable;
@@ -171,7 +166,8 @@ public class MovingGame extends KeyAdapter implements GLEventListener {
             cooSystem.rotate('z', -angle);
         } else if (keyPressed == 'u' || keyPressed == 'U') {
             cooSystem.rotate('z', angle);
-        } else if (keyPressed == 'w' || keyPressed == 'W') {
+        }
+        else if (keyPressed == 'w' || keyPressed == 'W') {
             cooSystem.moveStep('z', -step);
         } else if (keyPressed == 's' || keyPressed == 'S') {
             cooSystem.moveStep('z', step);
@@ -266,5 +262,6 @@ public class MovingGame extends KeyAdapter implements GLEventListener {
 
         return models;
     }
+
 
 }
